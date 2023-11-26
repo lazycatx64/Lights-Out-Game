@@ -85,12 +85,12 @@ class LightsOutGame:
                     height=2,
                     command=lambda i=i, j=j: self.do_toggle_light( i, j ),
                 )
-                for j in range( self.row_size )
+                for j in range( self.col_size )
             ]
-            for i in range( self.col_size )
+            for i in range( self.row_size )
         ]
-        for i in range( self.col_size ):
-            for j in range( self.row_size ):
+        for i in range( self.row_size ):
+            for j in range( self.col_size ):
                 self.button_gameblocks[i][j].grid( row=i, column=j )
 
 
@@ -115,7 +115,7 @@ class LightsOutGame:
         directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         for di, dj in directions:
             ni, nj = i + di, j + dj
-            if 0 <= ni < self.col_size and 0 <= nj < self.row_size:
+            if 0 <= ni < self.row_size and 0 <= nj < self.col_size:
                 self.board[ni][nj] = 1 - self.board[ni][nj]
 
 
@@ -128,8 +128,8 @@ class LightsOutGame:
 
 
     def do_update_blocks( self ):
-        for i in range( self.col_size ):
-            for j in range( self.row_size ):
+        for i in range( self.row_size ):
+            for j in range( self.col_size ):
                 if self.board[i][j] == 1:
                     self.button_gameblocks[i][j].config( bg="black" )
                 else:
@@ -142,7 +142,7 @@ class LightsOutGame:
         self.col_size = int(self.cols_input.get())
         self.frame_gameblocks.destroy()
         self.do_create_gameblocks()
-        self.board = [ [random.choice([0, 1]) for _ in range(self.row_size)] for _ in range(self.col_size) ]
+        self.board = [ [random.choice([0, 1]) for _ in range(self.col_size)] for _ in range(self.row_size) ]
         self.do_update_blocks()
 
 
