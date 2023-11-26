@@ -74,7 +74,7 @@ class LightsOutGame:
         
         # Frame for game blocks
         self.frame_gameblocks = tk.Frame( self.master, padx=10, pady=10, borderwidth=2, relief="ridge" )
-        self.frame_gameblocks.grid( row=2, column=0, columnspan=self.row_size+1 )
+        self.frame_gameblocks.grid( row=2, column=0 )
         
         # Game Blocks
         self.button_gameblocks = [
@@ -138,8 +138,16 @@ class LightsOutGame:
 
 
     def do_reset_game( self ):
-        self.row_size = int(self.rows_input.get())
-        self.col_size = int(self.cols_input.get())
+        try:
+            self.row_size = int(self.rows_input.get())
+            self.col_size = int(self.cols_input.get())
+            
+            if self.row_size <= 0 or self.col_size <= 0 or self.row_size > 20 or self.col_size > 20:
+                raise ValueError
+        except ValueError as e:
+            messagebox.showerror( 'Error', 'Row and column size must be numbers, and between 1 and 20' )
+            
+            
         self.frame_gameblocks.destroy()
         self.do_create_gameblocks()
         self.board = [ [random.choice([0, 1]) for _ in range(self.col_size)] for _ in range(self.row_size) ]
@@ -150,6 +158,7 @@ class LightsOutGame:
 def main():
     master = tk.Tk()
     master.title( TITLE )
+    master.resizable( False, False )
     game = LightsOutGame( master )
     master.mainloop()
     
